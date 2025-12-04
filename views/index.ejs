@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insecure Blog</title>
+</head>
+<body>
+    <h1>Insecure Blog</h1>
+
+    <a href="/register">Register</a> |
+    <a href="/login">Login</a> |
+    <a href="/posts/new">New Post</a>
+
+    <h2>Posts</h2>
+
+    <% if (posts && posts.length > 0) { %>
+        <ul>
+            <% posts.forEach(post => { %>
+                <li style="margin-bottom: 20px;">
+                    <h3><%= post.title %></h3>
+
+                    <!-- XSS -->
+                    <p><%- post.content %></p>
+
+                    <small><%= post.created_at %></small>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No posts yet.</p>
+    <% } %>
+</body>
+</html>
