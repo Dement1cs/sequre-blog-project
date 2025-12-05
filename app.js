@@ -46,27 +46,26 @@ app.use(helmet());            // security headers
 app.use(morgan('dev'));       // logging HTTP requests
 
 app.use(session({
-  secret: 'replace_this_with_env_secret', // в реале хранить в .env
+  secret: 'replace_this_with_env_secret', 
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    // secure: true в проде с HTTPS
-    maxAge: 1000 * 60 * 60 // 1 час
+    maxAge: 1000 * 60 * 60 
   }
 }));
 
-// CSRF должен идти после session и body-parser
+
 app.use(csrf());
 
-// Сделаем токен и текущего пользователя доступным во всех шаблонах
+// create curent token and use available in all templates
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   res.locals.currentUser = req.session.user || null;
   next();
 });
 
-// Простое логирование действий пользователя (для monitoring)
+
 app.use((req, res, next) => {
   const userId = req.session.user ? req.session.user.id : 'guest';
   console.log(`[LOG] ${new Date().toISOString()} ${req.method} ${req.url} user=${userId}`);
@@ -140,7 +139,7 @@ app.post('/login', (req, res) => {
       return res.render('login', { error: 'Invalid email or password.' });
     }
 
-    // Сохраняем пользователя в сессии (без пароля)
+    // seve user in session
     req.session.user = { id: user.id, email: user.email };
     res.redirect('/');
   });
