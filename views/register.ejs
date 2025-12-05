@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Register</title>
+  <meta charset="UTF-8">
+  <title>Register</title>
 </head>
 <body>
-    <h1>Register</h1>
-        <form method="post" action="/register">
-            <label>Email: <input type="email" name="email"></label><br>
-            <label>Password: <input type="password" name="password"></label><br>
-            <button type="submit">Register</button>
-        </form>
-    <a href="/">Back</a>
+  <h1>Register</h1>
+
+  <% if (error) { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <form method="post" action="/register">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
+    <button type="submit">Register</button>
+  </form>
+
+  <a href="/">Back</a>
 </body>
 </html>

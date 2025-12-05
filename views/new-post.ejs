@@ -2,16 +2,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Create Post</title>
+  <title>New Post</title>
 </head>
 <body>
-    <h1>Create Post</h1>
-    <form method="post" action="/posts/new">
-        <label>Title: <input type="text" name="title"></label><br>
-        <label>Content:</label><br>
-        <textarea name="content" rows="5" cols="40"></textarea><br>
-        <button type="submit">Create</button>
-    </form>
-    <a href="/">Back</a>
+  <h1>Create New Post</h1>
+
+  <% if (error) { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <form method="post" action="/posts/new">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>Title: <input type="text" name="title" required></label><br>
+    <label>Content:</label><br>
+    <textarea name="content" rows="5" cols="40" required></textarea><br>
+    <button type="submit">Create</button>
+  </form>
+
+  <a href="/">Back</a>
 </body>
 </html>

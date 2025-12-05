@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Search</title>
+</head>
+<body>
+  <h1>Search</h1>
+
+  <form method="get" action="/search">
+    <input type="text" name="q" value="<%= q %>">
+    <button type="submit">Search</button>
+  </form>
+
+  <h2>Results for: "<%= q %>"</h2>
+
+  <% if (posts && posts.length > 0) { %>
+    <ul>
+      <% posts.forEach(post => { %>
+        <li>
+          <a href="/posts/<%= post.id %>"><%= post.title %></a>
+          <small>by <%= post.author_email %></small>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No results.</p>
+  <% } %>
+
+  <a href="/">Back</a>
+</body>
+</html>

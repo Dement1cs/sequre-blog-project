@@ -1,39 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Insecure Blog</title>
+  <meta charset="UTF-8">
+  <title>Secure Blog - Home</title>
 </head>
 <body>
-    <h1>Insecure Blog</h1>
+  <h1>Secure Blog</h1>
 
-    <a href="/register">Register</a> |
-    <a href="/login">Login</a> |
+  <% if (currentUser) { %>
+    <p>Logged in as: <strong><%= currentUser.email %></strong></p>
+    <form method="post" action="/logout" style="display:inline;">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button type="submit">Logout</button>
+    </form>
+    |
     <a href="/posts/new">New Post</a>
+  <% } else { %>
+    <a href="/register">Register</a> |
+    <a href="/login">Login</a>
+  <% } %>
 
-    <h2>Posts</h2>
+  <hr>
 
-    <% if (posts && posts.length > 0) { %>
-        <ul>
-            <% posts.forEach(post => { %>
-                <li style="margin-bottom: 20px;">
-                    <h3><%= post.title %></h3>
+  <form method="get" action="/search">
+    <input type="text" name="q" placeholder="Search..." value="">
+    <button type="submit">Search</button>
+  </form>
 
-                    <!-- XSS -->
-                    <p><%- post.content %></p>
+  <h2>Posts</h2>
 
-                    <small><%= post.created_at %></small>
-                </li>
-            <% }) %>
-        </ul>
-    <% } else { %>
-        <p>No posts yet.</p>
-    <% } %>
-
-    <hr>
-
-    <h2>DOM XSS demo</h2>
-    <div id="dom-output">No hash yet.</div>
-    <script src="/dom.js"></script>
+  <% if (posts && posts.length > 0) { %>
+    <ul>
+      <% posts.forEach(post => { %>
+        <li style="margin-bottom: 20px;">
+          <h3>
+            <a href="/posts/<%= post.id %>"><%= post.title %></a>
+          </h3>
+          <p><%= post.content %></p> <!-- безопасный вывод -->
+          <small>By <%= post.author_email %> at <%= post.created_at %></small>
+          <% if (currentUser && currentUser.id === post.user_id) { %>
+            <br>
+            <a href="/posts/<%= post.id %>/edit">Edit</a>
+            <form method="post" action="/posts/<%= post.id %>/delete" style="display:inline;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button type="submit">Delete</button>
+            </form>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No posts yet.</p>
+  <% } %>
 </body>
 </html>

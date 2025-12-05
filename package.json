@@ -19,8 +19,13 @@
   },
   "homepage": "https://github.com/Dement1cs/sequre-blog-project#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "csurf": "^1.11.0",
     "ejs": "^3.1.10",
     "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
     "sqlite3": "^5.1.7"
   }
 }
